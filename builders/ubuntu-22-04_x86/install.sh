@@ -9,9 +9,7 @@ set -o xtrace
 gcc_version=${GCC_VERSION:-11}
 clang_version=${CLANG_VERSION:-14}
 cmake_version=${CMAKE_VERSION:-3.25.1}
-cmake_sha256=1c511d09516af493694ed9baf13c55947a36389674d657a2d5e0ccedc6b291d8
 doxygen_version=${DOXYGEN_VERSION:-1.9.5}
-doxygen_md5=1edb77277a84cf07972ffcd60acb8c1d
 conan_version=${CONAN_VERSION:-1.6}
 gcovr_version=${GCOVR_VERSION:-6.0}
 
@@ -93,40 +91,40 @@ update-alternatives --install \
 update-alternatives --auto clang-format
 
 # Download and unpack CMake.
-cmake_slug="cmake-${cmake_version}"
-cmake_archive="${cmake_slug}.tar.gz"
-curl --location --remote-name \
-  "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_archive}"
-echo "${cmake_sha256}  ${cmake_archive}" | sha256sum --check
-tar -xzf ${cmake_archive}
-rm ${cmake_archive}
+# cmake_slug="cmake-${cmake_version}"
+# cmake_archive="${cmake_slug}.tar.gz"
+# curl --location --remote-name \
+#   "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_archive}"
+# echo "${cmake_sha256}  ${cmake_archive}" | sha256sum --check
+# tar -xzf ${cmake_archive}
+# rm ${cmake_archive}
 
 # Build and install CMake.
-cd ${cmake_slug}
-./bootstrap --parallel=$(nproc)
-make -j $(nproc)
-make install
-cd ..
-rm --recursive --force ${cmake_slug}
+# cd ${cmake_slug}
+# ./bootstrap --parallel=$(nproc)
+# make -j $(nproc)
+# make install
+# cd ..
+# rm --recursive --force ${cmake_slug}
 
 # Download and unpack Doxygen.
-doxygen_slug="doxygen-${doxygen_version}"
-doxygen_archive="${doxygen_slug}.src.tar.gz"
-curl --location --remote-name \
-  "https://doxygen.nl/files/${doxygen_archive}"
-echo "${doxygen_md5}  ${doxygen_archive}" | md5sum --check
-tar -xzf ${doxygen_archive}
-rm ${doxygen_archive}
+# doxygen_slug="doxygen-${doxygen_version}"
+# doxygen_archive="${doxygen_slug}.src.tar.gz"
+# curl --location --remote-name \
+#   "https://doxygen.nl/files/${doxygen_archive}"
+# echo "${doxygen_md5}  ${doxygen_archive}" | md5sum --check
+# tar -xzf ${doxygen_archive}
+# rm ${doxygen_archive}
 
 # Build and install Doxygen.
-cd ${doxygen_slug}
-mkdir build
-cd build
-cmake -G Ninja -Duse_libclang=ON ..
-cmake --build . --parallel $(nproc)
-cmake --build . --target install
-cd ../..
-rm --recursive --force ${doxygen_slug}
+# cd ${doxygen_slug}
+# mkdir build
+# cd build
+# cmake -G Ninja -Duse_libclang=ON ..
+# cmake --build . --parallel $(nproc)
+# cmake --build . --target install
+# cd ../..
+# rm --recursive --force ${doxygen_slug}
 
 # Install Conan.
 pip3 --no-cache-dir install conan==${conan_version}
