@@ -9,6 +9,6 @@ help:
 
 # Build target
 ubuntu-22-04_x86:
-	docker build -t ubuntu-22-04_x86 -f ./builders/ubuntu-22-04_x86/Dockerfile .
+	docker build -t ubuntu-22-04_x86 -f ./builders/ubuntu-22-04_x86/Dockerfile ./builders/ubuntu-22-04_x86/
 
 .PHONY: all help ubuntu-22-04_x86
