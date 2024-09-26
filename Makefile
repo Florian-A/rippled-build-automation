@@ -1,6 +1,6 @@
 # Makefile
 
-all: help
+all: ubuntu-22-04_x86
 
 # Show a message to list all available options
 help:
@@ -9,6 +9,6 @@ help:
 
 # Build target
 ubuntu-22-04_x86:
-	docker build -t ubuntu-22-04_x86 -f ./builders/ubuntu-22-04_x86/Dockerfile ./builders/ubuntu-22-04_x86/
+	docker build --no-cache -t ubuntu-22-04_x86 -f ./builders/ubuntu-22-04_x86/Dockerfile ./builders/ubuntu-22-04_x86/
 
 .PHONY: all help ubuntu-22-04_x86

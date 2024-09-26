@@ -10,7 +10,7 @@ gcc_version=${GCC_VERSION:-11}
 clang_version=${CLANG_VERSION:-14}
 cmake_version=${CMAKE_VERSION:-3.25.1}
 doxygen_version=${DOXYGEN_VERSION:-1.9.5}
-conan_version=${CONAN_VERSION:-1.6}
+conan_version=${CONAN_VERSION:-1.59.0}
 gcovr_version=${GCOVR_VERSION:-6.0}
 
 # Do not add a stanza to this script without explaining why it is here.
@@ -129,21 +129,29 @@ update-alternatives --auto clang-format
 # Install Conan.
 pip3 --no-cache-dir install conan==${conan_version}
 
-conan profile new --detect gcc
-conan profile update settings.compiler=gcc gcc
-conan profile update settings.compiler.version=${gcc_version} gcc
-conan profile update settings.compiler.libcxx=libstdc++11 gcc
-conan profile update settings.compiler.cppstd=20 gcc
-conan profile update env.CC=/usr/bin/gcc gcc
-conan profile update env.CXX=/usr/bin/g++ gcc
+# conan profile new --detect gcc
+# conan profile update settings.compiler=gcc gcc
+# conan profile update settings.compiler.version=${gcc_version} gcc
+# conan profile update settings.compiler.libcxx=libstdc++11 gcc
+# conan profile update settings.compiler.cppstd=20 gcc
+# conan profile update env.CC=/usr/bin/gcc gcc
+# conan profile update env.CXX=/usr/bin/g++ gcc
 
-conan profile new --detect clang
-conan profile update settings.compiler=clang clang
-conan profile update settings.compiler.version=${clang_version} clang
-conan profile update settings.compiler.libcxx=libstdc++11 clang
-conan profile update settings.compiler.cppstd=20 clang
-conan profile update env.CC=/usr/bin/clang clang
-conan profile update env.CXX=/usr/bin/clang++ clang
+# conan profile new --detect clang
+# conan profile update settings.compiler=clang clang
+# conan profile update settings.compiler.version=${clang_version} clang
+# conan profile update settings.compiler.libcxx=libstdc++11 clang
+# conan profile update settings.compiler.cppstd=20 clang
+# conan profile update env.CC=/usr/bin/clang clang
+# conan profile update env.CXX=/usr/bin/clang++ clang
+
+
+conan profile new default --detect
+conan profile update settings.compiler.cppstd=20 default
+conan config set general.revisions_enabled=1
+conan profile update settings.compiler.libcxx=libstdc++11 default
+conan profile update 'conf.tools.build:cxxflags+=["-DBOOST_BEAST_USE_STD_STRING_VIEW"]' default
+conan profile update 'env.CXXFLAGS="-DBOOST_BEAST_USE_STD_STRING_VIEW"' default
 
 pip3 --no-cache-dir install gcovr==${gcovr_version}
 
