@@ -7,10 +7,11 @@ set -o xtrace   # Trace what gets executed (for debugging)
 # Define default versions
 gcc_version=${GCC_VERSION:-11}
 clang_version=${CLANG_VERSION:-14}
-cmake_version=${CMAKE_VERSION:-3.25.1}
 doxygen_version=${DOXYGEN_VERSION:-1.9.5}
 conan_version=${CONAN_VERSION:-1.60.0}
 gcovr_version=${GCOVR_VERSION:-6.0}
+cmake_version=${CMAKE_VERSION:-3.25.1}
+cmake_hash="3a5008b613eeb0724edeb3c15bf91d6ce518eb8eebc6ee758f89a0f4ff5d1fd6"
 
 # Update package list
 apt update
@@ -56,17 +57,25 @@ apt update
 apt install --yes clang-${clang_version} clang-tidy-${clang_version} clang-format-${clang_version} \
   libclang-${clang_version}-dev
 
+# Clean up package cache
+apt clean
+
 # Set up Clang versioning aliases
 update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${clang_version} 100 \
   --slave /usr/bin/clang++ clang++ /usr/bin/clang++-${clang_version}
 update-alternatives --auto clang
 
 # Install CMake
-curl -sL "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}-linux-x86_64.tar.gz" \
-  | tar -xz -C /opt
-echo "export PATH=/opt/cmake-${cmake_version}-linux-x86_64/bin:\$PATH" >> ~/.bashrc
-export PATH="/opt/cmake-${cmake_version}-linux-x86_64/bin:$PATH"
-rm -rf /root/cmake-${cmake_version}-linux-x86_64.tar.gz
+curl -sL -o cmake-${cmake_version}-linux-x86_64.tar.gz \
+  "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}-linux-x86_64.tar.gz"
+downloaded_cmake_hash=$(sha256sum cmake-${cmake_version}-linux-x86_64.tar.gz | awk '{print $1}')
+
+if [ "$downloaded_cmake_hash" = "$cmake_hash" ]; then
+  tar -xzvf cmake-${cmake_version}-linux-x86_64.tar.gz -C /opt
+else
+  exit 1
+fi
+rm -rf cmake-${cmake_version}-linux-x86_64.tar.gz
 
 # Install Conan and configure
 pip3 --no-cache-dir install conan==${conan_version}
@@ -79,6 +88,3 @@ conan profile update 'env.CXXFLAGS="-DBOOST_BEAST_USE_STD_STRING_VIEW"' default
 
 # Install Gcovr
 pip3 --no-cache-dir install gcovr==${gcovr_version}
-
-# Clean up package cache
-apt clean
