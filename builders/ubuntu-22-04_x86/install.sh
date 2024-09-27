@@ -5,17 +5,16 @@ set -o nounset
 set -o xtrace
 
 # Parameters
-
 gcc_version=${GCC_VERSION:-11}
 clang_version=${CLANG_VERSION:-14}
 cmake_version=${CMAKE_VERSION:-3.25.1}
 doxygen_version=${DOXYGEN_VERSION:-1.9.5}
-conan_version=${CONAN_VERSION:-1.59.0}
+conan_version=${CONAN_VERSION:-1.60.0}
 gcovr_version=${GCOVR_VERSION:-6.0}
 
 # Do not add a stanza to this script without explaining why it is here.
-
 apt update
+
 # Non-interactively install tzdata.
 # https://stackoverflow.com/a/44333806/618906
 DEBIAN_FRONTEND=noninteractive apt install --yes --no-install-recommends tzdata
@@ -90,62 +89,16 @@ update-alternatives --install \
   /usr/bin/clang-format clang-format /usr/bin/clang-format-${clang_version} 100
 update-alternatives --auto clang-format
 
-# Download and unpack CMake.
-# cmake_slug="cmake-${cmake_version}"
-# cmake_archive="${cmake_slug}.tar.gz"
-# curl --location --remote-name \
-#   "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_archive}"
-# echo "${cmake_sha256}  ${cmake_archive}" | sha256sum --check
-# tar -xzf ${cmake_archive}
-# rm ${cmake_archive}
-
-# Build and install CMake.
-# cd ${cmake_slug}
-# ./bootstrap --parallel=$(nproc)
-# make -j $(nproc)
-# make install
-# cd ..
-# rm --recursive --force ${cmake_slug}
-
-# Download and unpack Doxygen.
-# doxygen_slug="doxygen-${doxygen_version}"
-# doxygen_archive="${doxygen_slug}.src.tar.gz"
-# curl --location --remote-name \
-#   "https://doxygen.nl/files/${doxygen_archive}"
-# echo "${doxygen_md5}  ${doxygen_archive}" | md5sum --check
-# tar -xzf ${doxygen_archive}
-# rm ${doxygen_archive}
-
-# Build and install Doxygen.
-# cd ${doxygen_slug}
-# mkdir build
-# cd build
-# cmake -G Ninja -Duse_libclang=ON ..
-# cmake --build . --parallel $(nproc)
-# cmake --build . --target install
-# cd ../..
-# rm --recursive --force ${doxygen_slug}
+# Download and install CMake.
+curl --location --remote-name "https://github.com/Kitware/CMake/releases/download/v3.30.3/cmake-3.30.3-linux-x86_64.tar.gz"
+tar -xzvf cmake-3.30.3-linux-x86_64.tar.gz -C /opt
+echo 'export PATH=/opt/cmake-3.30.3-linux-x86_64/bin:$PATH' >> ~/.bashrc
+export PATH=/opt/cmake-3.30.3-linux-x86_64/bin:$PATH
 
 # Install Conan.
 pip3 --no-cache-dir install conan==${conan_version}
 
-# conan profile new --detect gcc
-# conan profile update settings.compiler=gcc gcc
-# conan profile update settings.compiler.version=${gcc_version} gcc
-# conan profile update settings.compiler.libcxx=libstdc++11 gcc
-# conan profile update settings.compiler.cppstd=20 gcc
-# conan profile update env.CC=/usr/bin/gcc gcc
-# conan profile update env.CXX=/usr/bin/g++ gcc
-
-# conan profile new --detect clang
-# conan profile update settings.compiler=clang clang
-# conan profile update settings.compiler.version=${clang_version} clang
-# conan profile update settings.compiler.libcxx=libstdc++11 clang
-# conan profile update settings.compiler.cppstd=20 clang
-# conan profile update env.CC=/usr/bin/clang clang
-# conan profile update env.CXX=/usr/bin/clang++ clang
-
-
+# Configure Conan.
 conan profile new default --detect
 conan profile update settings.compiler.cppstd=20 default
 conan config set general.revisions_enabled=1
@@ -153,6 +106,7 @@ conan profile update settings.compiler.libcxx=libstdc++11 default
 conan profile update 'conf.tools.build:cxxflags+=["-DBOOST_BEAST_USE_STD_STRING_VIEW"]' default
 conan profile update 'env.CXXFLAGS="-DBOOST_BEAST_USE_STD_STRING_VIEW"' default
 
+# Install Gcocr.
 pip3 --no-cache-dir install gcovr==${gcovr_version}
 
 # Clean up.
