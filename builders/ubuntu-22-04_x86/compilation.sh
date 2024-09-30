@@ -9,6 +9,8 @@ set -o xtrace   # Trace what gets executed (for debugging)
 rippled_version=${RIPPLED_VERSION:-2.2.3}
 rippled_hash="34f8a703765caba0cd21b3e703c2c225a2634c5cfde5239c74921721f1d02cf3"
 
+export PATH="/opt/cmake-${CMAKE_VERSION}-linux-x86_64/bin:$PATH"
+
 # Download Rippled sources
 curl -sL -o rippled-${rippled_version}.tar.gz \
   "https://github.com/XRPLF/rippled/archive/refs/tags/${rippled_version}.tar.gz"
@@ -22,7 +24,6 @@ else
 fi
 rm -rf rippled-${rippled_version}.tar.gz
 
-export PATH="/opt/cmake-${CMAKE_VERSION}-linux-x86_64/bin:$PATH"
 cd /build/rippled-${rippled_version}
 mkdir .build
 cd .build
