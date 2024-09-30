@@ -66,9 +66,9 @@ update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${clang_versio
 update-alternatives --auto clang
 
 # Install CMake
-curl -sL -o cmake-${cmake_version}-linux-x86_64.tar.gz \
-  "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}-linux-x86_64.tar.gz"
-downloaded_cmake_hash=$(sha256sum cmake-${cmake_version}-linux-x86_64.tar.gz | awk '{print $1}')
+curl -sL -o cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz \
+  "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz"
+downloaded_cmake_hash=$(sha256sum cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz | awk '{print $1}')
 
 if [ "$downloaded_cmake_hash" = "$cmake_hash" ]; then
   tar -xzvf cmake-${cmake_version}-linux-x86_64.tar.gz -C /opt
@@ -76,8 +76,6 @@ else
   exit 1
 fi
 rm -rf cmake-${cmake_version}-linux-x86_64.tar.gz
-export PATH="/opt/cmake-${cmake_version}-linux-x86_64/bin:$PATH"
-echo 'export PATH="/opt/cmake-'${cmake_version}'-linux-x86_64/bin:$PATH"' >> ~/.bashrc
 
 # Install Conan and configure
 pip3 --no-cache-dir install conan==${conan_version}

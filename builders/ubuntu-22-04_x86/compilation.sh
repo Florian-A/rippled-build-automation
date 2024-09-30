@@ -22,6 +22,7 @@ else
 fi
 rm -rf rippled-${rippled_version}.tar.gz
 
+export PATH="/opt/cmake-${CMAKE_VERSION}-linux-x86_64/bin:$PATH"
 cd /build/rippled-${rippled_version}
 mkdir .build
 cd .build
