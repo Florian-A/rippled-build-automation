@@ -76,6 +76,7 @@ else
   exit 1
 fi
 rm -rf cmake-${cmake_version}-linux-x86_64.tar.gz
+export PATH="/opt/cmake-${cmake_version}-linux-x86_64/bin:$PATH"
 
 # Install Conan and configure
 pip3 --no-cache-dir install conan==${conan_version}
