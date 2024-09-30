@@ -7,7 +7,7 @@ set -o xtrace   # Trace what gets executed (for debugging)
 # Define default versions
 
 rippled_version=${RIPPLED_VERSION:-2.2.3}
-rippled_hash="34f8a703765caba0cd21b3e703c2c225a2634c5cfde5239c74921721f1d02cf3"
+rippled_hash="d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
 
 # Download Rippled sources
 curl -sL -o rippled-${rippled_hash}.tar.gz \
