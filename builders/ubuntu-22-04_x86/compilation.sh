@@ -15,7 +15,7 @@ curl -sL -o rippled-${rippled_hash}.tar.gz \
 downloaded_rippled_hash=$(sha256sum rippled-${rippled_hash}.tar.gz | awk '{print $1}')
 
 if [ "$downloaded_rippled_hash" = "$rippled_hash" ]; then
-  tar -xzvf rippled-${rippled_hash}.tar.gz -C /build
+  tar -xvf rippled-${rippled_hash}.tar.gz -C /build
 else
   exit 1
 fi
