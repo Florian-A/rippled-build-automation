@@ -5,9 +5,15 @@ ARG CMAKE_VERSION=3.25.1
 
 ENV CMAKE_VERSION=${CMAKE_VERSION}
 
+# Install prerequisites
 WORKDIR /root
 COPY prerequisites.sh .
 RUN ./prerequisites.sh
+
+# Make rippled build
 WORKDIR /root
 COPY compilation.sh .
 RUN ./compilation.sh
+
+# Copy rippled binary
+RUN cp /build/rippled-2.2.3/.build/rippled ./build/rippled
