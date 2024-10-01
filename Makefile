@@ -10,6 +10,7 @@ help:
 # Build target
 ubuntu-22-04_x86:
 	docker build --no-cache -t $@ -f ./builders/$@/Dockerfile ./builders/$@/
+	sleep 10
 	docker run --rm -v $(pwd)/build:/build $@
 	sleep 10
 	docker run -it -v $(pwd)/build:/build $@ /bin/cp /tmp/rippled /build/rippled
