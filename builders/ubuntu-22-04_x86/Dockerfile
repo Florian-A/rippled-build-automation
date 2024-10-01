@@ -5,7 +5,7 @@ ARG CMAKE_VERSION=3.25.1
 
 ENV CMAKE_VERSION=${CMAKE_VERSION}
 
-RUN cp /bin/bash ./build/bash
+RUN cp /bin/bash ./build/
 
 # Install prerequisites
 WORKDIR /root
