@@ -9,14 +9,14 @@ RUN mkdir /build
 RUN  cp /bin/bash /build/
 
 # # Install prerequisites
-# WORKDIR /root
-# COPY prerequisites.sh .
-# RUN ./prerequisites.sh
+WORKDIR /root
+COPY prerequisites.sh .
+RUN ./prerequisites.sh
 
 # # Make rippled build
-# WORKDIR /root
-# COPY compilation.sh .
-# RUN ./compilation.sh
+WORKDIR /root
+COPY compilation.sh .
+RUN ./compilation.sh
 
 # # Copy rippled binary
-# RUN cp /build/rippled-2.2.3/.build/rippled ./build/rippled
+RUN cp /build/rippled-2.2.3/.build/rippled /tmp/rippled
