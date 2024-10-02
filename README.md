@@ -4,7 +4,7 @@ This repository provides a Dockerized and automated solution for compiling the R
 
 It builds a Docker image containing all the necessary prerequisites for compilation, fetches the project sources from GitHub, and then performs the compilation.
 
-### Prerequisites :
+### Prerequisites
 
 - Docker
 - Make
