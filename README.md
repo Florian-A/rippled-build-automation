@@ -28,3 +28,7 @@ Once the compilation is complete, the compiled binary will be located in the `bu
 Here’s the translation:
 
 **Please note that the compilation may take over an hour to complete!**
+
+### Acknowledgments
+
+Some scripts have been modified from those found at https://github.com/thejohnfreeman/rippled-docker. A big thank you for their contribution!
