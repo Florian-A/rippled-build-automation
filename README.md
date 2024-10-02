@@ -1,4 +1,4 @@
-# Builder Rippled
+# Rippled build automation 
 
 This repository provides a Dockerized and automated solution for compiling the Rippled daemon.
 
