@@ -1,11 +1,11 @@
 # Makefile
 
-all: ubuntu-22-04_x86
+all: help
 
 # Show a message to list all available options
 help:
-	@echo "Please choose a target to build:"
-	@echo "  - ubuntu-22-04_x86"
+	@echo "Please type 'make' followed by the target name, available targets:"
+	@echo "- ubuntu-22-04_x86"
 
 # Build target
 ubuntu-22-04_x86:
