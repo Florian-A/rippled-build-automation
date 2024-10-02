@@ -4,27 +4,22 @@ set -o errexit  # Exit script on any error
 set -o nounset  # Treat unset variables as errors
 set -o xtrace   # Trace what gets executed (for debugging)
 
-# Define default versions
-
-rippled_version=${RIPPLED_VERSION:-2.2.3}
-rippled_hash="34f8a703765caba0cd21b3e703c2c225a2634c5cfde5239c74921721f1d02cf3"
-
 export PATH="/opt/cmake-${CMAKE_VERSION}-linux-x86_64/bin:$PATH"
 
 # Download Rippled sources
-curl -sL -o rippled-${rippled_version}.tar.gz \
-  "https://github.com/XRPLF/rippled/archive/refs/tags/${rippled_version}.tar.gz"
-downloaded_rippled_hash=$(sha256sum rippled-${rippled_version}.tar.gz | awk '{print $1}')
+curl -sL -o rippled-${RIPPLED_VERSION}.tar.gz \
+  "https://github.com/XRPLF/rippled/archive/refs/tags/${RIPPLED_VERSION}.tar.gz"
+downloaded_rippled_hash=$(sha256sum rippled-${RIPPLED_VERSION}.tar.gz | awk '{print $1}')
 
-if [ "$downloaded_rippled_hash" = "$rippled_hash" ]; then
+if [ "$downloaded_rippled_hash" = "$RIPPLED_HASH" ]; then
   mkdir -p /build
-  tar -xzvf rippled-${rippled_version}.tar.gz -C /build
+  tar -xzvf rippled-${RIPPLED_VERSION}.tar.gz -C /build
 else
   exit 1
 fi
-rm -rf rippled-${rippled_version}.tar.gz
+rm -rf rippled-${RIPPLED_VERSION}.tar.gz
 
-cd /build/rippled-${rippled_version}
+cd /build/rippled-${RIPPLED_VERSION}
 mkdir .build
 cd .build
 conan install .. --output-folder . --build missing --settings build_type=Release
